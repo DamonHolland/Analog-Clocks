@@ -33,12 +33,11 @@
 </body>
 
 <script>
-  clock2D("leftCanvas");
-  clock2D("midCanvas");
-  clock2D("rightCanvas");
-  document.getElementById("updateButton").addEventListener("click", function(){clock2D("leftCanvas")});
-  document.getElementById("updateButton").addEventListener("click", function(){clock2D("midCanvas")});
-  document.getElementById("updateButton").addEventListener("click", function(){clock2D("rightCanvas")});
+  function refresh(){clock2D("leftCanvas");
+                     clock2D("midCanvas");
+                     clock2D("rightCanvas")}
+  document.getElementById("updateButton").addEventListener("click", refresh);
+  window.addEventListener("load", refresh);
 </script>
 
 </html>

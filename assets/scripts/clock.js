@@ -1,6 +1,8 @@
 function clock2D(canvasID){
+  const SMALL_CLOCK_CUTOFF = 100;
+  const LARGE_CLOCK_CUTOFF = 500;
   var canvas = document.getElementById(canvasID);
-  if(canvas.width >= 100 && canvas.width <= 500){
+  if(canvas.width >= SMALL_CLOCK_CUTOFF && canvas.width <= LARGE_CLOCK_CUTOFF){
     const CENTER_RADIUS = 5;
     const CLOCK_COLOR = 'black';
     const CLOCK_BG_COLOR = 'transparent';
@@ -24,6 +26,7 @@ function clock2D(canvasID){
     const FONT = '24px serif';
     const FONT_ALIGNMENT = 'center';
     const FONT_ROTATION_OFFSET = 6;
+    const WINDOW_SIZE_NUMBER_CUTOFF = 250;
     var context = canvas.getContext('2d');
     var origin = canvas.width / 2;
     var date = new Date();
@@ -50,7 +53,7 @@ function clock2D(canvasID){
       context.stroke();
     }
 
-    if(canvas.width >= 250){
+    if(canvas.width >= WINDOW_SIZE_NUMBER_CUTOFF){
       setContextAttributes(context, CLOCK_COLOR, CLOCK_COLOR,
                            SECOND_HAND_WIDTH);
       for (var i = 1; i <= HOURS_IN_ANALOG_DAY; i++){

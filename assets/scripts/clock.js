@@ -2,9 +2,9 @@ function clock2D(canvasID){
   var canvas = document.getElementById(canvasID);
   if(canvas.width >= 100 && canvas.width <= 500){
     const CENTER_RADIUS = 5;
-    const CLOCK_COLOR = "black";
-    const CLOCK_BG_COLOR = "transparent";
-    const HAND_COLOR = "teal";
+    const CLOCK_COLOR = 'black';
+    const CLOCK_BG_COLOR = 'transparent';
+    const HAND_COLOR = 'teal';
     const HAND_OVERLAP = 20;
     const HOUR_HAND_WIDTH = 5;
     const MINUTE_HAND_WIDTH = 4;
@@ -21,10 +21,10 @@ function clock2D(canvasID){
     const MINUTES_IN_HOUR = 60;
     const SECONDS_IN_MINUTE = 60;
     const NUMBER_DISPLAY_OFFSET = 40;
-    const FONT = "24px serif";
-    const FONT_ALIGNMENT = "center";
+    const FONT = '24px serif';
+    const FONT_ALIGNMENT = 'center';
     const FONT_ROTATION_OFFSET = 6;
-    var context = canvas.getContext("2d");
+    var context = canvas.getContext('2d');
     var origin = canvas.width / 2;
     var date = new Date();
     var hour = date.getHours() % HOURS_IN_ANALOG_DAY;

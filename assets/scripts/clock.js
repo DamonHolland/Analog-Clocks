@@ -9,7 +9,6 @@ function clock2D(canvasID){
   const SECOND_HAND_WIDTH = 1;
   const HOUR_HAND_RATIO = 0.5;
   const LONG_HAND_CUTOFF = 25;
-  const NUM_TICKS = 60;
   const LONG_TICK_INTERVAL = 5;
   const LONG_TICK_LENGTH = 20;
   const SHORT_TICK_LENGTH = 10;
@@ -19,20 +18,26 @@ function clock2D(canvasID){
   const HOURS_IN_ANALOG_DAY = 12;
   const MINUTES_IN_HOUR = 60;
   const SECONDS_IN_MINUTE = 60;
+  const NUMBER_DISPLAY_OFFSET = 40;
+  const FONT = "24px serif";
+  const FONT_ALIGNMENT = "center";
+  const FONT_ROTATION_OFFSET = 6;
   var canvas = document.getElementById(canvasID);
   var context = canvas.getContext("2d");
   var origin = canvas.width / 2;
   var date = new Date();
-  var hour = date.getHours() % 12;
+  var hour = date.getHours() % HOURS_IN_ANALOG_DAY;
   var minute = date.getMinutes();
   var second = date.getSeconds();
+  context.font = FONT;
+  context.textAlign = FONT_ALIGNMENT;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
   drawCircle(context, origin, origin, CLOCK_COLOR, CLOCK_BG_COLOR,
              SECOND_HAND_WIDTH);
-  context.save();
-  for (var i = 1; i <= NUM_TICKS; i++){
-    rotateContext(context, origin, (CIRCLE_DEGREES / NUM_TICKS));
+
+  for (var i = 1; i <= MINUTES_IN_HOUR; i++){
+    rotateContext(context, origin, origin, (CIRCLE_DEGREES / MINUTES_IN_HOUR));
     context.beginPath();
     context.moveTo(origin, 0);
     context.lineWidth = (i % LONG_TICK_INTERVAL == 0) ? LONG_TICK_WIDTH :
@@ -42,7 +47,18 @@ function clock2D(canvasID){
     context.lineTo(origin, tickLength);
     context.stroke();
   }
-  context.restore();
+
+  setContextAttributes(context, CLOCK_COLOR, CLOCK_COLOR, SECOND_HAND_WIDTH);
+  for (var i = 1; i <= HOURS_IN_ANALOG_DAY; i++){
+    rotateContext(context, origin, origin,
+                 (CIRCLE_DEGREES / HOURS_IN_ANALOG_DAY));
+    context.save();
+    rotateContext(context, origin, NUMBER_DISPLAY_OFFSET - FONT_ROTATION_OFFSET,
+                 (0 - ((CIRCLE_DEGREES / HOURS_IN_ANALOG_DAY) * i)));
+    context.fillText(i, origin, NUMBER_DISPLAY_OFFSET);
+    context.restore();
+  }
+
 
   drawHand(context, origin, HAND_COLOR, HOUR_HAND_WIDTH,
            HOUR_HAND_RATIO * origin, HAND_OVERLAP,
@@ -71,7 +87,7 @@ function drawHand(context, origin, handColor, handWidth, handLength,
                   handOverlap, rotationDegrees){
   context.save();
   setContextAttributes(context, handColor, handColor, handWidth);
-  rotateContext(context, origin, rotationDegrees);
+  rotateContext(context, origin, origin, rotationDegrees);
   context.beginPath();
   context.moveTo(origin, origin + handOverlap);
   context.lineTo(origin, origin - (0 + handLength));
@@ -79,11 +95,11 @@ function drawHand(context, origin, handColor, handWidth, handLength,
   context.restore();
 }
 
-function rotateContext(context, origin, rotationDegrees){
+function rotateContext(context, originX, originY, rotationDegrees){
   const RADIAN = Math.PI / 180;
-  context.translate(origin, origin);
+  context.translate(originX, originY);
   context.rotate(RADIAN * rotationDegrees);
-  context.translate(-origin, -origin);
+  context.translate(-originX, -originY);
 }
 
 function setContextAttributes(context, strokeColor, fillColor, penWidth){

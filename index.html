@@ -5,7 +5,6 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="assets/css/index.css">
-  <script src="assets/scripts/clock.js"></script>
   <title>Analog Clock</title>
 </head>
 
@@ -32,12 +31,6 @@
 
 </body>
 
-<script>
-  function refresh(){clock2D("leftCanvas");
-                     clock2D("midCanvas");
-                     clock2D("rightCanvas")}
-  document.getElementById("updateButton").addEventListener("click", refresh);
-  window.addEventListener("load", refresh);
-</script>
+<script src="assets/scripts/clock.js"></script>
 
 </html>

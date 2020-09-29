@@ -1,3 +1,12 @@
+document.getElementById("updateButton").addEventListener("click", refresh);
+window.addEventListener("load", refresh);
+
+function refresh(){
+  clock2D("leftCanvas");
+  clock2D("midCanvas");
+  clock2D("rightCanvas")
+}
+
 function clock2D(canvasID){
   const SMALL_CLOCK_CUTOFF = 100;
   const LARGE_CLOCK_CUTOFF = 500;

@@ -1,22 +1,58 @@
-document.getElementById("update").addEventListener("click", updateLeftCanvas);
-document.getElementById("update").addEventListener("click", updateMidCanvas);
-document.getElementById("update").addEventListener("click", updateRightCanvas);
-window.addEventListener("load", updateLeftCanvas);
-window.addEventListener("load", updateMidCanvas);
-window.addEventListener("load", updateRightCanvas);
+document.getElementById('update').addEventListener('click', updateLeftCanvas);
+document.getElementById('update').addEventListener('click', updateMidCanvas);
+document.getElementById('update').addEventListener('click', updateRightCanvas);
+window.addEventListener('load', updateLeftCanvas);
+window.addEventListener('load', updateMidCanvas);
+window.addEventListener('load', updateRightCanvas);
 
+/*******************************************************************************
+Function: updateLeftCanvas
+
+Description: Updates the left canvas with the current time.
+
+Parameters: none
+
+Returned: none
+*******************************************************************************/
 function updateLeftCanvas(){
-  clock2D("leftCanvas");
+  clock2D('leftCanvas');
 }
 
+/*******************************************************************************
+Function: updateMidCanvas
+
+Description: Updates the middle canvas with the current time.
+
+Parameters: none
+
+Returned: none
+*******************************************************************************/
 function updateMidCanvas(){
-  clock2D("midCanvas");
+  clock2D('midCanvas');
 }
 
+/*******************************************************************************
+Function: updateRightCanvas
+
+Description: Updates the right canvas with the current time.
+
+Parameters: none
+
+Returned: none
+*******************************************************************************/
 function updateRightCanvas(){
-  clock2D("rightCanvas");
+  clock2D('rightCanvas');
 }
 
+/*******************************************************************************
+Function: clock2D
+
+Description: Draws a clock with the current time on the given canvas.
+
+Parameters: canvasID - A string containing the id of the canvas to draw a clock
+
+Returned: none
+*******************************************************************************/
 function clock2D(canvasID){
   const SMALL_CLOCK_CUTOFF = 100;
   const LARGE_CLOCK_CUTOFF = 500;
@@ -52,7 +88,7 @@ function clock2D(canvasID){
 
     //Clear canvas and draw outer circle of clock
     context.clearRect(0, 0, canvas.width, canvas.height);
-    drawCircle(context, origin, origin, CLOCK_COLOR, CLOCK_BG_COLOR, CLOCK_PEN);
+    drawCircle(context, origin, origin, CLOCK_COLOR, CLOCK_BG_COLOR);
 
     //Draw the ticks of the clock
     for (let i = 1; i <= NUM_TICKS; i++){
@@ -80,25 +116,52 @@ function clock2D(canvasID){
       }
     }
 
+    //Draw hands of clock
     drawHourHand(context, origin, hour);
     drawMinuteHand(context, origin, minute);
     drawSecondHand(context, origin, second);
 
     //Draw the middle button of the clock
-    drawCircle(context, origin, CENTER_RADIUS, CLOCK_COLOR, CLOCK_COLOR,
-               CLOCK_PEN);
+    drawCircle(context, origin, CENTER_RADIUS, CLOCK_COLOR, CLOCK_COLOR);
   }
 }
 
-function drawCircle(context, origin, radius, outlineColor, fillColor, penWidth){
+/*******************************************************************************
+Function: drawCircle
+
+Description: Draws a circle on the given context
+
+Parameters: context - The context to draw the circle on
+            origin  - A number containing the origin of the circle
+                      (only 1 point because the canvas is assumed square, and
+                      circles only need to be drawn from the center)
+            radius - A number containing the radius of the circle to draw
+            outlineColor - The color of the outline of the circle drawn
+            fillColor - The color of the inside of the circle drawn
+
+Returned: none
+*******************************************************************************/
+function drawCircle(context, origin, radius, outlineColor, fillColor){
   const REVOLUTION = 2 * Math.PI;
-  setContextAttributes(context, outlineColor, fillColor, penWidth);
+  const DEFAULT_PEN = 1;
+  setContextAttributes(context, outlineColor, fillColor, DEFAULT_PEN);
   context.beginPath();
   context.arc(origin, origin, radius, 0, REVOLUTION);
   context.fill();
   context.stroke();
 }
 
+/*******************************************************************************
+Function: drawHourHand
+
+Description: Draws an hour hand on the given context
+
+Parameters: context - The context to draw the hour hand on
+            origin  - A number containing the origin of the clock
+            hour - A number containing the current hour (analog)
+
+Returned: none
+*******************************************************************************/
 function drawHourHand(context, origin, hour){
   const HAND_COLOR = 'teal';
   const HAND_WIDTH = 5;
@@ -112,6 +175,17 @@ function drawHourHand(context, origin, hour){
     HAND_OVERLAP, degrees);
 }
 
+/*******************************************************************************
+Function: drawMinuteHand
+
+Description: Draws a minute hand on the given context
+
+Parameters: context - The context to draw the hour hand on
+            origin  - A number containing the origin of the clock
+            minute - A number containing the current minute
+
+Returned: none
+*******************************************************************************/
 function drawMinuteHand(context, origin, minute){
   const HAND_COLOR = 'teal';
   const HAND_WIDTH = 4;
@@ -126,6 +200,17 @@ function drawMinuteHand(context, origin, minute){
            degrees);
 }
 
+/*******************************************************************************
+Function: drawSecondHand
+
+Description: Draws a second hand on the given context
+
+Parameters: context - The context to draw the hour hand on
+            origin  - A number containing the origin of the clock
+            second - A number containing the current second
+
+Returned: none
+*******************************************************************************/
 function drawSecondHand(context, origin, second){
   const HAND_COLOR = 'black';
   const HAND_WIDTH = 1;
@@ -140,6 +225,23 @@ function drawSecondHand(context, origin, second){
            degrees);
 }
 
+/*******************************************************************************
+Function: drawHand
+
+Description: Draws a hand on the given context
+
+Parameters: context - The context to draw the hour hand on
+            origin  - A number containing the origin of the clock
+            color - The color to draw the hand
+            width - A number containing the width of the hand
+            length - A number containing the length of the hand
+            overlap - A number containing the amount the hand should overlap
+                      the center button
+            degrees - A number containing the degrees of rotation the hand needs
+                      to be drawn
+
+Returned: none
+*******************************************************************************/
 function drawHand(context, origin, color, width, length, overlap, degrees){
   context.save();
   setContextAttributes(context, color, color, width);
@@ -151,6 +253,18 @@ function drawHand(context, origin, color, width, length, overlap, degrees){
   context.restore();
 }
 
+/*******************************************************************************
+Function: rotateContext
+
+Description: rotates the context a given number of degrees around a given origin
+
+Parameters: context - The context to rotate
+            originX  - A number containing the origins x pos to rotate around
+            originY  - A number containing the origins y pos to rotate around
+            degrees - A number containing the degrees of rotation
+
+Returned: none
+*******************************************************************************/
 function rotateContext(context, originX, originY, degrees){
   const RADIAN = Math.PI / 180;
   context.translate(originX, originY);
@@ -158,6 +272,19 @@ function rotateContext(context, originX, originY, degrees){
   context.translate(-originX, -originY);
 }
 
+/*******************************************************************************
+Function: setContextAttributes
+
+Description: sets some common attributes of the context to specified values 
+             (Just to clean up the code a bit)
+
+Parameters: context - The context to change the attributes of
+            strokeColor  - The new color of the pen
+            fillColor  - The new fill color of the pen
+            penWidth - A number containing the new pen width
+
+Returned: none
+*******************************************************************************/
 function setContextAttributes(context, strokeColor, fillColor, penWidth){
   context.strokeStyle = strokeColor;
   context.fillStyle = fillColor;

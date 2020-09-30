@@ -18,6 +18,15 @@ canvas {
   margin: auto;
 }
 
+button{
+  color: white;
+  width: 150px;
+  height: 30px;
+  background-color: rgb(182,31,157);
+  border: none;
+  border-radius: 12px;
+}
+
 .row {
   width: 100%
 }
@@ -32,9 +41,11 @@ canvas {
 .left{
   background-color: rgb(107, 199, 64);
 }
+
 .mid{
   background-color: rgb(34, 180, 185);
 }
+
 .right{
   background-color: rgb(31, 121, 182);
 }
@@ -43,13 +54,4 @@ canvas {
   .col {
     width: 100%;
   }
-}
-
-button{
-  color: white;
-  width: 150px;
-  height: 30px;
-  background-color: rgb(182,31,157);
-  border: none;
-  border-radius: 12px;
 }

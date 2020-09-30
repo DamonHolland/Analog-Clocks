@@ -33,6 +33,7 @@ function clock2D(canvasID){
   const LONG_TICK_LENGTH = 20;
   const SHORT_TICK_LENGTH = 10;
   const LONG_TICK_WIDTH = 2;
+  const SHORT_TICK_WIDTH = 1;
   const NUM_TICKS = 60;
   const HOURS_ON_CLOCK = 12;
   const CIRCLE_DEGREES = 360;

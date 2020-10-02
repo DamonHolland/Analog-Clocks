@@ -1,3 +1,15 @@
+/*******************************************************************************
+File Name:    clock.js
+Author:       Damon Holland
+Date:         10/02/2020
+Class:        CS360
+Assignment:   JS Clocks
+Hours Worked: 4 hours
+Purpose:      Adds event lister to the button on the website to update clocks.
+              Upon updating, a clock with the current time will be drawn on the
+              given canvases.
+*******************************************************************************/
+
 document.getElementById('update').addEventListener('click', updateLeftCanvas);
 document.getElementById('update').addEventListener('click', updateMidCanvas);
 document.getElementById('update').addEventListener('click', updateRightCanvas);

@@ -12,33 +12,49 @@ html {
   margin: auto;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  color: white;
 }
 
-h1{
-  font-size: medium;
+h1 {
+  font-size: larger;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: small;
   font-weight: normal;
-  color: white;
-  background-color: rgb(182,31,157);
-  margin: 0px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-left: 12pt;
+  padding-right: 12pt;
 }
 
 canvas {
   margin: auto;
 }
 
-button{
-  color: white;
-  width: 150px;
-  height: 30px;
+.row {
+  display: flex;
+  width: 100%;
   background-color: rgb(182,31,157);
-  border: none;
-  border-radius: 12px;
 }
 
-.row {
-  width: 100%
+.stackrow {
+  width: 100%;
+}
+
+.headcol{
+  display: flex;
+  float: right;
+  width: 50%;
+  height: 50px;
+  align-items: center;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
 }
 
 .col {
@@ -48,15 +64,15 @@ button{
   height: 300px;
 }
 
-.left{
+.green{
   background-color: rgb(107, 199, 64);
 }
 
-.mid{
+.blue{
   background-color: rgb(34, 180, 185);
 }
 
-.right{
+.purple{
   background-color: rgb(31, 121, 182);
 }
 

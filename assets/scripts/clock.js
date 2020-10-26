@@ -9,12 +9,58 @@ Purpose:      Adds event listeners to the button on the site to update clocks.
               Upon updating, a clock with the current time will be drawn on the
               given canvases.
 *******************************************************************************/
-window.setInterval(updateLeftCanvas, 1000);
-window.setInterval(updateMidCanvas, 1000);
-window.setInterval(updateRightCanvas, 1000);
-window.addEventListener('load', updateLeftCanvas);
-window.addEventListener('load', updateMidCanvas);
-window.addEventListener('load', updateRightCanvas);
+
+(function() {
+  let intervalList = new Array();
+
+  document.getElementById('toggle').addEventListener('click', toggleClockType);
+  addInterval(updateLeftCanvas, 1000);
+  addInterval(updateMidCanvas, 1000);
+  addInterval(updateRightCanvas, 1000);
+  window.addEventListener('load', updateLeftCanvas);
+  window.addEventListener('load', updateMidCanvas);
+  window.addEventListener('load', updateRightCanvas);
+
+  function toggleClockType(e){
+    toggler = e.target;
+    date = new Date();
+    const DIGITAL_INTERVAL = 1000;
+    const ANALOG_INTERVAL = 1000 / 24;
+    const MILLISECONDS_IN_SECOND = 1000;
+
+    if (toggler.innerHTML == 'DIGITAL'){
+      toggler.innerHTML = 'ANALOG';
+      clearIntervals();
+      addInterval(updateLeftCanvas, ANALOG_INTERVAL);
+      addInterval(updateMidCanvas, ANALOG_INTERVAL);
+      addInterval(updateRightCanvas, ANALOG_INTERVAL);
+      
+    }
+    else{
+      toggler.innerHTML = 'DIGITAL';
+      clearIntervals();
+      console.log(MILLISECONDS_IN_SECOND - date.getMilliseconds());
+      setTimeout(function(){
+        addInterval(updateLeftCanvas, DIGITAL_INTERVAL);
+        addInterval(updateMidCanvas, DIGITAL_INTERVAL);
+        addInterval(updateRightCanvas, DIGITAL_INTERVAL);
+      }, MILLISECONDS_IN_SECOND - date.getMilliseconds());
+    }
+
+}
+
+function addInterval(callbackFunction, interval){
+  callbackFunction();
+  intervalList.push(window.setInterval(callbackFunction, interval));
+}
+
+function clearIntervals(){
+  while (intervalList.length > 0){
+    window.clearInterval(intervalList.pop());
+  }
+}
+
+})()
 
 /*******************************************************************************
 Function: updateLeftCanvas
@@ -26,7 +72,8 @@ Parameters: none
 Returned: none
 *******************************************************************************/
 function updateLeftCanvas(){
-  clock2D('leftCanvas');
+  const PST_OFFSET = 0;
+  clock2D('leftCanvas', PST_OFFSET);
 }
 
 /*******************************************************************************
@@ -39,7 +86,8 @@ Parameters: none
 Returned: none
 *******************************************************************************/
 function updateMidCanvas(){
-  clock2D('midCanvas');
+  const MST_OFFSET = 1;
+  clock2D('midCanvas', MST_OFFSET);
 }
 
 /*******************************************************************************
@@ -52,7 +100,8 @@ Parameters: none
 Returned: none
 *******************************************************************************/
 function updateRightCanvas(){
-  clock2D('rightCanvas');
+  const CST_OFFSET = 2;
+  clock2D('rightCanvas', CST_OFFSET);
 }
 
 /*******************************************************************************
@@ -61,10 +110,12 @@ Function: clock2D
 Description: Draws a clock with the current time on the given canvas.
 
 Parameters: canvasID - A string containing the id of the canvas to draw a clock
+            hourOffset - A number containing the hour offset relative to PST
+                         the clock will display
 
 Returned: none
 *******************************************************************************/
-function clock2D(canvasID){
+function clock2D(canvasID, hourOffset){
   const SMALL_CLOCK_CUTOFF = 100;
   const LARGE_CLOCK_CUTOFF = 500;
   const CLOCK_COLOR = 'black';
@@ -88,9 +139,10 @@ function clock2D(canvasID){
   let context = canvas.getContext('2d');
   let origin = canvas.width / 2;
   let date = new Date();
-  let hour = date.getHours() % HOURS_ON_CLOCK;
+  let hour = date.getHours() % HOURS_ON_CLOCK + hourOffset;
   let minute = date.getMinutes();
   let second = date.getSeconds();
+  let millisecond = date.getMilliseconds();
   context.font = FONT;
   context.textAlign = FONT_ALIGNMENT;
 
@@ -130,7 +182,7 @@ function clock2D(canvasID){
     //Draw hands of clock
     drawHourHand(context, origin, hour, minute, second);
     drawMinuteHand(context, origin, minute, second);
-    drawSecondHand(context, origin, second);
+    drawSecondHand(context, origin, second, millisecond);
 
     //Draw the middle button of the clock
     drawCircle(context, origin, CENTER_RADIUS, CLOCK_COLOR, CLOCK_COLOR);
@@ -229,17 +281,21 @@ Description: Draws a second hand on the given context
 Parameters: context - The context to draw the hour hand on
             origin  - A number containing the origin of the clock
             second - A number containing the current second
+            millisecond - A number containing the current millisecond
 
 Returned: none
 *******************************************************************************/
-function drawSecondHand(context, origin, second){
+function drawSecondHand(context, origin, second, millisecond){
   const HAND_COLOR = 'black';
   const HAND_WIDTH = 1;
   const LONG_HAND_CUTOFF = 25;
   const HAND_OVERLAP = 20;
   const CIRCLE_DEGREES = 360;
   const SECONDS_IN_MINUTE = 60;
+  const MILLISECONDS_IN_SECOND = 1000;
   let degrees = (CIRCLE_DEGREES / SECONDS_IN_MINUTE) * second;
+  degrees += ((CIRCLE_DEGREES / SECONDS_IN_MINUTE) * millisecond) /
+               MILLISECONDS_IN_SECOND;
   let length = origin - LONG_HAND_CUTOFF;
 
   drawHand(context, origin, HAND_COLOR, HAND_WIDTH, length, HAND_OVERLAP,

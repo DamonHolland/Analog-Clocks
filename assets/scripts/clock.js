@@ -5,14 +5,13 @@ Date:         10/02/2020
 Class:        CS360
 Assignment:   JS Clocks
 Hours Worked: 4 hours
-Purpose:      Adds event lister to the button on the website to update clocks.
+Purpose:      Adds event listeners to the button on the site to update clocks.
               Upon updating, a clock with the current time will be drawn on the
               given canvases.
 *******************************************************************************/
-
-document.getElementById('update').addEventListener('click', updateLeftCanvas);
-document.getElementById('update').addEventListener('click', updateMidCanvas);
-document.getElementById('update').addEventListener('click', updateRightCanvas);
+window.setInterval(updateLeftCanvas, 1000);
+window.setInterval(updateMidCanvas, 1000);
+window.setInterval(updateRightCanvas, 1000);
 window.addEventListener('load', updateLeftCanvas);
 window.addEventListener('load', updateMidCanvas);
 window.addEventListener('load', updateRightCanvas);

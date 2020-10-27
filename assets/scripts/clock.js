@@ -212,8 +212,8 @@ function clock2D(canvasID, hourOffset){
     }
 
     //Draw hands of clock
-    drawHourHand(context, origin, hour, minute, second);
-    drawMinuteHand(context, origin, minute, second);
+    drawHourHand(context, origin, hour, minute, second, millisecond);
+    drawMinuteHand(context, origin, minute, second, millisecond);
     drawSecondHand(context, origin, second, millisecond);
 
     //Draw the middle button of the clock
@@ -251,15 +251,16 @@ Function:    drawHourHand
 
 Description: Draws an hour hand on the given context
 
-Parameters:  context - The context to draw the hour hand on
-             origin  - A number containing the origin of the clock
-             hour    - A number containing the current hour (analog)
-             minute  - A number containing the current minute (analog)
-             second  - A number containing the current second (analog)
+Parameters:  context     - The context to draw the hour hand on
+             origin      - A number containing the origin of the clock
+             hour        - A number containing the current hour
+             minute      - A number containing the current minute
+             second      - A number containing the current second
+             millisecond - A number containing the current millisecond
 
 Returned: none
 *******************************************************************************/
-function drawHourHand(context, origin, hour, minute, second){
+function drawHourHand(context, origin, hour, minute, second, millisecond){
   const HAND_COLOR = 'teal';
   const HAND_WIDTH = 5;
   const HAND_RATIO = 0.5;
@@ -268,10 +269,13 @@ function drawHourHand(context, origin, hour, minute, second){
   const HOURS_ON_CLOCK = 12;
   const MINUTES_IN_HOUR = 60;
   const SECONDS_IN_MINUTE = 60;
+  const MILLISECONDS_IN_SECOND = 1000;
   let degrees = (CIRCLE_DEGREES / HOURS_ON_CLOCK) * hour;
-  degrees += ((CIRCLE_DEGREES / HOURS_ON_CLOCK) * minute) / MINUTES_IN_HOUR;
-  degrees += (((CIRCLE_DEGREES / HOURS_ON_CLOCK) * second) / MINUTES_IN_HOUR) /
-             SECONDS_IN_MINUTE;
+  degrees += (CIRCLE_DEGREES / HOURS_ON_CLOCK / MINUTES_IN_HOUR) * minute;
+  degrees += (CIRCLE_DEGREES / HOURS_ON_CLOCK / MINUTES_IN_HOUR /
+             SECONDS_IN_MINUTE) * second;
+  degrees += (CIRCLE_DEGREES / HOURS_ON_CLOCK / MINUTES_IN_HOUR /
+             SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND) * millisecond;
 
   drawHand(context, origin, HAND_COLOR, HAND_WIDTH, HAND_RATIO * origin,
     HAND_OVERLAP, degrees);
@@ -282,14 +286,15 @@ Function:    drawMinuteHand
 
 Description: Draws a minute hand on the given context
 
-Parameters:  context - The context to draw the hour hand on
-             origin  - A number containing the origin of the clock
-             minute  - A number containing the current minute
-             minute  - A number containing the current second
+Parameters:  context     - The context to draw the hour hand on
+             origin      - A number containing the origin of the clock
+             minute      - A number containing the current minute
+             second      - A number containing the current second
+             millisecond - A number containing the current millisecond
 
 Returned: none
 *******************************************************************************/
-function drawMinuteHand(context, origin, minute, second){
+function drawMinuteHand(context, origin, minute, second, millisecond){
   const HAND_COLOR = 'teal';
   const HAND_WIDTH = 4;
   const LONG_HAND_CUTOFF = 25;
@@ -297,8 +302,11 @@ function drawMinuteHand(context, origin, minute, second){
   const CIRCLE_DEGREES = 360;
   const MINUTES_IN_HOUR = 60;
   const SECONDS_IN_MINUTE = 60;
+  const MILLISECONDS_IN_SECOND = 1000;
   let degrees = (CIRCLE_DEGREES / MINUTES_IN_HOUR) * minute;
-  degrees += ((CIRCLE_DEGREES / MINUTES_IN_HOUR) * second) / SECONDS_IN_MINUTE;
+  degrees += (CIRCLE_DEGREES / MINUTES_IN_HOUR / SECONDS_IN_MINUTE) * second;
+  degrees += (CIRCLE_DEGREES / MINUTES_IN_HOUR / SECONDS_IN_MINUTE /
+             MILLISECONDS_IN_SECOND) * millisecond;
   let length = origin - LONG_HAND_CUTOFF;
 
   drawHand(context, origin, HAND_COLOR, HAND_WIDTH, length, HAND_OVERLAP,
@@ -326,8 +334,8 @@ function drawSecondHand(context, origin, second, millisecond){
   const SECONDS_IN_MINUTE = 60;
   const MILLISECONDS_IN_SECOND = 1000;
   let degrees = (CIRCLE_DEGREES / SECONDS_IN_MINUTE) * second;
-  degrees += ((CIRCLE_DEGREES / SECONDS_IN_MINUTE) * millisecond) /
-               MILLISECONDS_IN_SECOND;
+  degrees += (CIRCLE_DEGREES / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND) *
+             millisecond;
   let length = origin - LONG_HAND_CUTOFF;
 
   drawHand(context, origin, HAND_COLOR, HAND_WIDTH, length, HAND_OVERLAP,

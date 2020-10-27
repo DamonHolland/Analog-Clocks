@@ -1,10 +1,10 @@
 /*******************************************************************************
 File Name:    index.css
 Author:       Damon Holland
-Date:         10/02/2020
+Date:         10/26/2020
 Class:        CS360
 Assignment:   JS Clocks
-Hours Worked: 1 hour
+Hours Worked: 2 hours
 Purpose:      The formatting for the clocks website
 *******************************************************************************/
 
@@ -16,8 +16,8 @@ html {
 }
 
 h1 {
-  font-size: larger;
-  font-weight: bold;
+  font-size: x-large;
+  font-weight: normal;
 }
 
 h2 {
@@ -41,7 +41,7 @@ canvas {
   width: 100%;
 }
 
-.headcol{
+.headcol {
   display: flex;
   float: right;
   width: 50%;
@@ -64,15 +64,15 @@ canvas {
   height: 300px;
 }
 
-.green{
+.green {
   background-color: rgb(107, 199, 64);
 }
 
-.blue{
+.blue {
   background-color: rgb(34, 180, 185);
 }
 
-.purple{
+.purple {
   background-color: rgb(31, 121, 182);
 }
 

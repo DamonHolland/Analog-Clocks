@@ -1,22 +1,26 @@
 /*******************************************************************************
 File Name:    clock.js
 Author:       Damon Holland
-Date:         10/02/2020
+Date:         10/26/2020
 Class:        CS360
 Assignment:   JS Clocks
-Hours Worked: 4 hours
-Purpose:      Adds event listeners to the button on the site to update clocks.
+Hours Worked: 6 hours
+Purpose:      Adds timers to the clocks to update them.
               Upon updating, a clock with the current time will be drawn on the
               given canvases.
 *******************************************************************************/
 
 (function() {
+  const DIGITAL_INTERVAL = 1000;
+  const ANALOG_INTERVAL = 1000 / 24;
+  const MILLISECONDS_IN_SECOND = 1000;
   let intervalList = new Array();
 
+  addInterval(updateLeftCanvas, DIGITAL_INTERVAL);
+  addInterval(updateMidCanvas, DIGITAL_INTERVAL);
+  addInterval(updateRightCanvas, DIGITAL_INTERVAL);
+
   document.getElementById('toggle').addEventListener('click', toggleClockType);
-  addInterval(updateLeftCanvas, 1000);
-  addInterval(updateMidCanvas, 1000);
-  addInterval(updateRightCanvas, 1000);
   window.addEventListener('load', updateLeftCanvas);
   window.addEventListener('load', updateMidCanvas);
   window.addEventListener('load', updateRightCanvas);
@@ -24,9 +28,6 @@ Purpose:      Adds event listeners to the button on the site to update clocks.
   function toggleClockType(e){
     toggler = e.target;
     date = new Date();
-    const DIGITAL_INTERVAL = 1000;
-    const ANALOG_INTERVAL = 1000 / 24;
-    const MILLISECONDS_IN_SECOND = 1000;
 
     if (toggler.innerHTML == 'DIGITAL'){
       toggler.innerHTML = 'ANALOG';
@@ -39,7 +40,6 @@ Purpose:      Adds event listeners to the button on the site to update clocks.
     else{
       toggler.innerHTML = 'DIGITAL';
       clearIntervals();
-      console.log(MILLISECONDS_IN_SECOND - date.getMilliseconds());
       setTimeout(function(){
         addInterval(updateLeftCanvas, DIGITAL_INTERVAL);
         addInterval(updateMidCanvas, DIGITAL_INTERVAL);
@@ -47,18 +47,18 @@ Purpose:      Adds event listeners to the button on the site to update clocks.
       }, MILLISECONDS_IN_SECOND - date.getMilliseconds());
     }
 
-}
-
-function addInterval(callbackFunction, interval){
-  callbackFunction();
-  intervalList.push(window.setInterval(callbackFunction, interval));
-}
-
-function clearIntervals(){
-  while (intervalList.length > 0){
-    window.clearInterval(intervalList.pop());
   }
-}
+
+  function addInterval(callbackFunction, interval){
+    callbackFunction();
+    intervalList.push(window.setInterval(callbackFunction, interval));
+  }
+
+  function clearIntervals(){
+    while (intervalList.length > 0){
+      window.clearInterval(intervalList.pop());
+    }
+  }
 
 })()
 

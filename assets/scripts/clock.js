@@ -25,6 +25,16 @@ Purpose:      Adds timers to the clocks to update them.
   window.addEventListener('load', updateMidCanvas);
   window.addEventListener('load', updateRightCanvas);
 
+/*******************************************************************************
+Function:    toggleClockType
+
+Description: Changes the text of the toggler between ANALOG and DIGITAL, and
+             changes the frequency that the clocks update to match.
+
+Parameters:  e - A string that specifies the name of the event
+
+Returned:    none
+*******************************************************************************/
   function toggleClockType(e){
     toggler = e.target;
     date = new Date();
@@ -35,41 +45,63 @@ Purpose:      Adds timers to the clocks to update them.
       addInterval(updateLeftCanvas, ANALOG_INTERVAL);
       addInterval(updateMidCanvas, ANALOG_INTERVAL);
       addInterval(updateRightCanvas, ANALOG_INTERVAL);
-      
     }
     else{
       toggler.innerHTML = 'DIGITAL';
       clearIntervals();
+      //This timeout is to ensure that the clock updates on an exact second
       setTimeout(function(){
         addInterval(updateLeftCanvas, DIGITAL_INTERVAL);
         addInterval(updateMidCanvas, DIGITAL_INTERVAL);
         addInterval(updateRightCanvas, DIGITAL_INTERVAL);
       }, MILLISECONDS_IN_SECOND - date.getMilliseconds());
     }
-
   }
 
+/*******************************************************************************
+Function:    addInterval
+
+Description: Adds an interval to the window object with the specified frequency
+             and callback function. This interval will be added to the interval
+             list to keep track of it if it needs to be removed later.
+             (The callback function is also called initially, so that the clocks
+             do not skip a second when updating)
+
+Parameters:  callbackFunction - The function to call on the specified interval
+             interval         - A number containing the frequency in
+                                milliseconds.
+Returned:    none
+*******************************************************************************/
   function addInterval(callbackFunction, interval){
     callbackFunction();
     intervalList.push(window.setInterval(callbackFunction, interval));
   }
 
+/*******************************************************************************
+Function:    clearIntervals
+
+Description: Removes all of the intervals on the window object, by iterating
+             the interval list and clearing them all.
+
+Parameters:  none
+
+Returned:    none
+*******************************************************************************/
   function clearIntervals(){
     while (intervalList.length > 0){
       window.clearInterval(intervalList.pop());
     }
   }
-
 })()
 
 /*******************************************************************************
-Function: updateLeftCanvas
+Function:    updateLeftCanvas
 
 Description: Updates the left canvas with the current time.
 
-Parameters: none
+Parameters:  none
 
-Returned: none
+Returned:    none
 *******************************************************************************/
 function updateLeftCanvas(){
   const PST_OFFSET = 0;
@@ -77,13 +109,13 @@ function updateLeftCanvas(){
 }
 
 /*******************************************************************************
-Function: updateMidCanvas
+Function:    updateMidCanvas
 
 Description: Updates the middle canvas with the current time.
 
-Parameters: none
+Parameters:  none
 
-Returned: none
+Returned:    none
 *******************************************************************************/
 function updateMidCanvas(){
   const MST_OFFSET = 1;
@@ -91,13 +123,13 @@ function updateMidCanvas(){
 }
 
 /*******************************************************************************
-Function: updateRightCanvas
+Function:    updateRightCanvas
 
 Description: Updates the right canvas with the current time.
 
-Parameters: none
+Parameters:  none
 
-Returned: none
+Returned:    none
 *******************************************************************************/
 function updateRightCanvas(){
   const CST_OFFSET = 2;
@@ -105,13 +137,13 @@ function updateRightCanvas(){
 }
 
 /*******************************************************************************
-Function: clock2D
+Function:    clock2D
 
 Description: Draws a clock with the current time on the given canvas.
 
-Parameters: canvasID - A string containing the id of the canvas to draw a clock
-            hourOffset - A number containing the hour offset relative to PST
-                         the clock will display
+Parameters:  canvasID   - A string containing the id of the canvas to draw on
+             hourOffset - A number containing the hour offset relative to PST
+                          the clock will display
 
 Returned: none
 *******************************************************************************/
@@ -190,17 +222,17 @@ function clock2D(canvasID, hourOffset){
 }
 
 /*******************************************************************************
-Function: drawCircle
+Function:    drawCircle
 
 Description: Draws a circle on the given context
 
-Parameters: context - The context to draw the circle on
-            origin  - A number containing the origin of the circle
-                      (only 1 point because the canvas is assumed square, and
-                      circles only need to be drawn from the center)
-            radius - A number containing the radius of the circle to draw
-            outlineColor - The color of the outline of the circle drawn
-            fillColor - The color of the inside of the circle drawn
+Parameters:  context      - The context to draw the circle on
+             origin       - A number containing the origin of the circle
+                            (only 1 point because the canvas is assumed square,
+                            and circles only need to be drawn from the center)
+             radius       - A number containing the radius of the circle to draw
+             outlineColor - The color of the outline of the circle drawn
+             fillColor    - The color of the inside of the circle drawn
 
 Returned: none
 *******************************************************************************/
@@ -215,15 +247,15 @@ function drawCircle(context, origin, radius, outlineColor, fillColor){
 }
 
 /*******************************************************************************
-Function: drawHourHand
+Function:    drawHourHand
 
 Description: Draws an hour hand on the given context
 
-Parameters: context - The context to draw the hour hand on
-            origin  - A number containing the origin of the clock
-            hour - A number containing the current hour (analog)
-            minute - A number containing the current minute (analog)
-            second - A number containing the current second (analog)
+Parameters:  context - The context to draw the hour hand on
+             origin  - A number containing the origin of the clock
+             hour    - A number containing the current hour (analog)
+             minute  - A number containing the current minute (analog)
+             second  - A number containing the current second (analog)
 
 Returned: none
 *******************************************************************************/
@@ -246,14 +278,14 @@ function drawHourHand(context, origin, hour, minute, second){
 }
 
 /*******************************************************************************
-Function: drawMinuteHand
+Function:    drawMinuteHand
 
 Description: Draws a minute hand on the given context
 
-Parameters: context - The context to draw the hour hand on
-            origin  - A number containing the origin of the clock
-            minute - A number containing the current minute
-            minute - A number containing the current second
+Parameters:  context - The context to draw the hour hand on
+             origin  - A number containing the origin of the clock
+             minute  - A number containing the current minute
+             minute  - A number containing the current second
 
 Returned: none
 *******************************************************************************/
@@ -274,14 +306,14 @@ function drawMinuteHand(context, origin, minute, second){
 }
 
 /*******************************************************************************
-Function: drawSecondHand
+Function:    drawSecondHand
 
 Description: Draws a second hand on the given context
 
-Parameters: context - The context to draw the hour hand on
-            origin  - A number containing the origin of the clock
-            second - A number containing the current second
-            millisecond - A number containing the current millisecond
+Parameters:  context     - The context to draw the hour hand on
+             origin      - A number containing the origin of the clock
+             second      - A number containing the current second
+             millisecond - A number containing the current millisecond
 
 Returned: none
 *******************************************************************************/
@@ -303,19 +335,19 @@ function drawSecondHand(context, origin, second, millisecond){
 }
 
 /*******************************************************************************
-Function: drawHand
+Function:    drawHand
 
 Description: Draws a hand on the given context
 
-Parameters: context - The context to draw the hour hand on
-            origin  - A number containing the origin of the clock
-            color - The color to draw the hand
-            width - A number containing the width of the hand
-            length - A number containing the length of the hand
-            overlap - A number containing the amount the hand should overlap
-                      the center button
-            degrees - A number containing the degrees of rotation the hand needs
-                      to be drawn
+Parameters:  context - The context to draw the hour hand on
+             origin  - A number containing the origin of the clock
+             color   - The color to draw the hand
+             width   - A number containing the width of the hand
+             length  - A number containing the length of the hand
+             overlap - A number containing the amount the hand should overlap
+                       the center button
+             degrees - A number containing the degrees of rotation the hand
+                       needs to be drawn
 
 Returned: none
 *******************************************************************************/
@@ -331,14 +363,14 @@ function drawHand(context, origin, color, width, length, overlap, degrees){
 }
 
 /*******************************************************************************
-Function: rotateContext
+Function:    rotateContext
 
 Description: rotates the context a given number of degrees around a given origin
 
-Parameters: context - The context to rotate
-            originX  - A number containing the origins x pos to rotate around
-            originY  - A number containing the origins y pos to rotate around
-            degrees - A number containing the degrees of rotation
+Parameters:  context  - The context to rotate
+             originX  - A number containing the origins x pos to rotate around
+             originY  - A number containing the origins y pos to rotate around
+             degrees  - A number containing the degrees of rotation
 
 Returned: none
 *******************************************************************************/
@@ -350,15 +382,15 @@ function rotateContext(context, originX, originY, degrees){
 }
 
 /*******************************************************************************
-Function: setContextAttributes
+Function:    setContextAttributes
 
 Description: sets some common attributes of the context to specified values 
              (Just to clean up the code a bit)
 
-Parameters: context - The context to change the attributes of
-            strokeColor  - The new color of the pen
-            fillColor  - The new fill color of the pen
-            penWidth - A number containing the new pen width
+Parameters:  context      - The context to change the attributes of
+             strokeColor  - The new color of the pen
+             fillColor    - The new fill color of the pen
+             penWidth     - A number containing the new pen width
 
 Returned: none
 *******************************************************************************/
